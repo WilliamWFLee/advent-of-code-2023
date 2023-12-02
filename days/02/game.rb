@@ -4,7 +4,7 @@ require_relative 'collection'
 class Game
   attr_reader :id
 
-  def initialize(string, bag)
+  def initialize(string, bag: nil)
     @bag = bag
     # The ID is always before a colon
     @id = string.match(/\d+(?=\:)/).to_s.to_i
@@ -17,5 +17,13 @@ class Game
 
   def possible?
     @collections.all? { |collection| collection <= @bag }
+  end
+
+  def power
+    # Iterate through each color and find the maximum number
+    # of cubes drawn from all the draws of that color
+    %i(red green blue).map do |color|
+      @collections.map { |draw| draw.public_send(color) }.max
+    end.reduce(:*)
   end
 end
