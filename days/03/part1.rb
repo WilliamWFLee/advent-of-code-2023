@@ -1,9 +1,10 @@
 require_relative 'grid'
+require_relative 'symbol_finder'
 
 DIGITS_REGEX = /\d+/
 
 grid = Grid.new(File.read('input.txt'))
-
+symbol_finder = SymbolFinder.new(grid)
 # Find the start and end of all digits on each line
 answer = grid.map do |line|
   # Looks for digits by regex and returns the matches
@@ -16,7 +17,7 @@ end.map.with_index do |matches, row|
     # A number is included if at least one of its digits is adjacent
     # to a symbol that is not a dot or a digit
     (start...end_).any? do |column|
-      grid.adjacent_to_symbol?(row, column)
+      symbol_finder.adjacent_to_symbol?(row, column)
     end
   end
 end
