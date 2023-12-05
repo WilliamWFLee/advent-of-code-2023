@@ -30,4 +30,8 @@ class Card
       card_values.include? winning_number
     end
   end
+
+  def clone
+    self.class.new(@winning_numbers, @card_values)
+  end
 end
