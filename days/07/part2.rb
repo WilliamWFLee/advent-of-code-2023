@@ -1,14 +1,18 @@
 require_relative 'card'
 require_relative 'hand'
 
-ORDER = %w(2 3 4 5 6 7 8 9 T J Q K A).freeze
+ORDER = %w(J 2 3 4 5 6 7 8 9 T Q K A).freeze
 
 data = File.readlines('input.txt', chomp: true).map do |line|
   line.split(' ')
 end
 
 hands = data.map do |hand_string, bet_string|
-  Hand.new(hand_string.chars.map { |value| Card.new(value, ORDER) }, bet_string.to_i)
+  Hand.new(
+    hand_string.chars.map { |value| Card.new(value, ORDER) }, 
+    bet_string.to_i,
+    use_joker: true
+  )
 end
 
 # Sort by card values first
