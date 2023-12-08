@@ -10,7 +10,7 @@ class MapRange
   end
 
   def in_range?(src_value)
-    @src_range_start <= src_value && src_value <= @src_range_end
+    (@src_range_start..@src_range_end).include? src_value
   end
 
   # Only return a value if the source value is within range
