@@ -7,43 +7,26 @@ class GalaxyDataReader
   end
 
   def galaxies
-    @galaxies ||= begin
-      process_text
-      expand_empty_columns
-      expand_empty_rows
-      find_galaxies
-    end
+    process_text
+    @galaxies ||= find_galaxies
+  end
+
+  def empty_columns
+    @empty_columns ||= (0...@arr.first.length).map do |col_index|
+      col_index if @arr.all? { |row| row[col_index] == '.' }
+    end.compact
+  end
+
+  def empty_rows
+    @empty_rows = @arr.map.with_index do |row, i|
+      i if row.all? { |char| char == '.' }
+    end.compact
   end
 
   private
 
     def process_text
       @arr = @data.split("\n").map(&:strip).map(&:chars)
-    end
-
-    def expand_empty_columns
-      cols_to_expand = []
-      (0...@arr.first.length).each do |col_index|
-        if @arr.all? { |row| row[col_index] == '.' }
-          cols_to_expand << col_index
-        end
-      end
-
-      cols_to_expand.each_with_index do |col_index, offset|
-        @arr.each do |row|
-          row.insert(col_index + offset, '.')
-        end
-      end
-    end
-
-    def expand_empty_rows
-      @arr = @arr.map do |row|
-        if row.all? { |char| char == '.' }
-          [[row.clone]] * 2
-        else
-          [[row]]
-        end
-      end.flatten(2)
     end
 
     def find_galaxies

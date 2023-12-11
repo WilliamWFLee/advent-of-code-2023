@@ -5,8 +5,4 @@ class Galaxy
     @x = x
     @y = y
   end
-
-  def taxicab_distance(other)
-    (self.x - other.x).abs + (self.y - other.y).abs
-  end
 end
